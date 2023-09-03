@@ -63,18 +63,31 @@ player2 = Player(775, 250, 50,100, player_pic, 5)
 
 font = pygame.font.SysFont('Mistral', 40)
 
+score1 = 0
+score2 = 0
+
 gamemode = 'menu'
 game = True
 while game:
     if gamemode == 'menu':
         window.fill((27, 242, 235))
         new_lb =font.render ("Натисніть ENTER щоб почати знову", True, (255,255,255)) 
-        window.blit(new_lb,(190,270))
+        window.blit(new_lb,(190,270)) 
+
+        if score1 == 9:
+            win_lb = font.render ("Переміг граець під номером 1", True, (255,255,255)) 
+            window.blit(win_lb,(230,330)) 
+
+        if score2 == 9:
+            win_lb = font.render ("Переміг граець під номером 2", True, (255,255,255)) 
+            window.blit(win_lb,(230,330)) 
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game = False
             if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                score1 = 0
+                score2 = 0
                 gamemode = 'game'
 
     if gamemode == 'game':
@@ -84,6 +97,9 @@ while game:
         player2.update()
         ball.update()
 
+        score_lb = font.render (str(score1) + " : "+ str(score2), True, (255,255,255))
+        window.blit(score_lb, (425, 0))
+
         player1.move(pygame.K_s, pygame.K_w)
         player2.move(pygame.K_DOWN, pygame.K_UP)
         ball.move()
@@ -91,8 +107,15 @@ while game:
         if ball.colide(player1) or ball.colide(player2):
             ball.x_sp *= -1
 
-        if ball.rect.x > win_width or ball.rect.x < 0:
-            ball.rect.x = 300
+        if ball.rect.x > win_width:
+            score1 += 1
+            ball.rect.x = 425
+
+        if ball.rect.x < 0:
+            score2 += 1
+            ball.rect.x = 425
+
+        if score1 == 9 or score2 == 9:
             gamemode = 'menu'
 
         for event in pygame.event.get():
