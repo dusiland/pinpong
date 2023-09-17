@@ -5,6 +5,11 @@ pygame.init()
 win_width, win_height = 900, 600
 
 window = pygame.display.set_mode((win_width, win_height))
+pygame.display.set_caption('Ping pong')
+
+pygame.mixer_music.load('musik.mp3')
+pygame.mixer_music.set_volume(0.75)
+pygame.mixer_music.play(-1)
 
 FPS = 60
 clock = pygame.time.Clock()
